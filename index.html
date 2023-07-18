@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta name="description" content="A Hangman Game" />
+            <title>Hang The Boys</title>
+            <link rel="stylesheet" href="styles.css" />
+        </head>
+        <body>
+            <h1 id="title">Hang The Boys</h1>
+            <div id="result">
+
+            </div>
+
+            <div id="hangmanDisplay">
+                <div id="hangman">
+
+                </div>
+            </div>
+
+            <div id="correctAnswer">
+
+            </div>
+
+            <div id="randomDisplay">
+
+            </div>
+
+            <div id="optionDisplay">
+              <div id="keyboard">
+                <div id="firstRow">
+                  <div class="letter"><div class="button">Q</div></div>
+                  <div class="letter"><div class="button">W</div></div>
+                  <div class="letter"><div class="button">E</div></div>
+                  <div class="letter"><div class="button">R</div></div>
+                  <div class="letter"><div class="button">T</div></div>
+                  <div class="letter"><div class="button">Y</div></div>
+                  <div class="letter"><div class="button">U</div></div>
+                  <div class="letter"><div class="button">I</div></div>
+                  <div class="letter"><div class="button">O</div></div>
+                  <div class="letter"><div class="button">P</div></div>
+                </div>
+                <div id="secondRow">
+                  <div class="letter"><div class="button">A</div></div>
+                  <div class="letter"><div class="button">S</div></div>
+                  <div class="letter"><div class="button">D</div></div>
+                  <div class="letter"><div class="button">F</div></div>
+                  <div class="letter"><div class="button">G</div></div>
+                  <div class="letter"><div class="button">H</div></div>
+                  <div class="letter"><div class="button">J</div></div>
+                  <div class="letter"><div class="button">K</div></div>
+                  <div class="letter"><div class="button">L</div></div>
+                </div>
+                <div id="thirdRow">
+                  <div class="letter"><div class="button">Z</div></div>
+                  <div class="letter"><div class="button">X</div></div>
+                  <div class="letter"><div class="button">C</div></div>
+                  <div class="letter"><div class="button">V</div></div>
+                  <div class="letter"><div class="button">B</div></div>
+                  <div class="letter"><div class="button">N</div></div>
+                  <div class="letter"><div class="button">M</div></div>
+                </div>
+              </div>
+            </div>
+
+            <script type="module">
+              import {generate, count} from "/node_modules/random-words/index.js";
+
+              let randomWord = generate(1);
+              randomWord = randomWord[0].toUpperCase().split("");
+              console.log(randomWord)
+              let game = "on";
+              let correctCount = 0;
+
+              for(let i = 0; i < randomWord.length; i ++) {
+                let space = document.createElement("div");
+                let letter = document.createElement("h1");
+                let letterNode = document.createTextNode(randomWord[i]);
+                letter.appendChild(letterNode);
+                space.appendChild(letter);
+                space.className = `space ${randomWord[i]}`;
+                document.getElementById("randomDisplay").appendChild(space);
+              }
+
+              let buttons = document.getElementsByClassName("letter");
+              for(let i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener("click", function() {
+                  let letter = buttons[i].innerText;
+                  if(game == "off") {
+                    return false;
+                  }
+                  for(let j = 0; j < randomWord.length; j++) {
+                    
+                    if(randomWord[j] == letter) {
+                      buttons[i].style.backgroundColor = "lightgreen";
+                      buttons[i].firstChild.style.color = "lightgreen";
+                      buttons[i].firstChild.style.transition = "0.3s";
+                      console.log(randomWord[j])
+                      let arr = document.getElementsByClassName(`space ${randomWord[j]}`);
+                      for(let k = 0; k < arr.length; k++) {
+                        arr[k].style.color = "black";
+                        correctCount++;
+                      }
+                      if(correctCount == randomWord.length) {
+                        console.log("win");
+                        let winTitle = document.createElement("h2");
+                        let winTitleNode = document.createTextNode("You Win!");
+                        winTitle.appendChild(winTitleNode);
+                        document.getElementById("result").appendChild(winTitle);
+                        game = "off"
+                      }
+                      return false;
+                    } 
+                  };
+                  if(buttons[i].className != "letter off") {
+                    buttons[i].style.backgroundColor = "red";
+                    buttons[i].firstChild.style.color = "red";
+                    buttons[i].firstChild.style.transition = "0.3s";
+                    buttons[i].className = "letter off";
+                    hangcount();
+                  }
+                  return false;
+                })
+              }
+
+              let attribute = function(element, att) {
+                for(var key in att) {
+                  element.setAttributeNS(null, key, att[key]);
+                }
+              }
+
+              let n = 0;
+
+              let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+              attribute(svg, {"width": "150", "height": "80"})
+              let svgNS = svg.namespaceURI;
+              document.getElementById("hangman").appendChild(svg);
+
+                let hangcount = function() {
+
+                  if(n == 0) {
+                    let rightLeg1 = document.createElementNS(svgNS, "line");
+                    attribute(rightLeg1, {"stroke": "#000000", "y2": "69", "x2": "48.3", "y1": "53", "x1": "36.3", "stroke-width": "2", "fill": "none"});
+                    let leftLeg1 = document.createElementNS(svgNS, "line");
+                    attribute(leftLeg1, {"stroke": "#000000", "y2": "69", "x2": "24.3", "y1": "53", "x1": "36.3", "stroke-width": "2", "fill": "none"});
+  
+                    svg.appendChild(rightLeg1);
+                    svg.appendChild(leftLeg1);
+
+                    let rightLeg2 = document.createElementNS(svgNS, "line");
+                    attribute(rightLeg2, {"stroke": "#000000", "y2": "69", "x2": "89.3", "y1": "53", "x1": "77.3", "stroke-width": "2", "fill": "none"});
+                    let leftLeg2 = document.createElementNS(svgNS, "line");
+                    attribute(leftLeg2, {"stroke": "#000000", "y2": "69", "x2": "65.3", "y1": "53", "x1": "77.3", "stroke-width": "2", "fill": "none"});
+  
+                    svg.appendChild(rightLeg2);
+                    svg.appendChild(leftLeg2);
+
+                    let rightLeg3 = document.createElementNS(svgNS, "line");
+                    attribute(rightLeg3, {"stroke": "#000000", "y2": "69", "x2": "127.3", "y1": "53", "x1": "115.3", "stroke-width": "2", "fill": "none"});
+                    let leftLeg3 = document.createElementNS(svgNS, "line");
+                    attribute(leftLeg3, {"stroke": "#000000", "y2": "69", "x2": "103.3", "y1": "53", "x1": "115.3", "stroke-width": "2", "fill": "none"});
+  
+                    svg.appendChild(rightLeg3);
+                    svg.appendChild(leftLeg3);
+                  }
+
+                  if(n == 1) {
+                    let body1 = document.createElementNS(svgNS, "line");
+                    attribute(body1, {"stroke": "#000000", "y2": "36", "x2": "36.3", "y1": "53", "x1": "36.3", "stroke-width": "2", "fill": "none"});
+
+  
+                    svg.appendChild(body1);
+
+                    let body2 = document.createElementNS(svgNS, "line");
+                    attribute(body2, {"stroke": "#000000", "y2": "36", "x2": "77.3", "y1": "53", "x1": "77.3", "stroke-width": "2", "fill": "none"});
+  
+                    svg.appendChild(body2);
+
+                    let body3 = document.createElementNS(svgNS, "line");
+                    attribute(body3, {"stroke": "#000000", "y2": "36", "x2": "115.3", "y1": "53", "x1": "115.3", "stroke-width": "2", "fill": "none"});
+  
+                    svg.appendChild(body3);
+                  }
+
+                  if(n == 2) {
+                    let rightHand1 = document.createElementNS(svgNS, "line");
+                    attribute(rightHand1, {"stroke": "#000000", "y2": "53", "x2": "46.3", "y1": "41", "x1": "36.3", "stroke-width": "2", "fill": "none"});
+                    let leftHand1 = document.createElementNS(svgNS, "line");
+                    attribute(leftHand1, {"stroke": "#000000", "y2": "53", "x2": "26.3", "y1": "41", "x1": "36.3", "stroke-width": "2", "fill": "none"});
+  
+                    svg.appendChild(rightHand1);
+                    svg.appendChild(leftHand1);
+
+                    let rightHand2 = document.createElementNS(svgNS, "line");
+                    attribute(rightHand2, {"stroke": "#000000", "y2": "53", "x2": "87.3", "y1": "41", "x1": "77.3", "stroke-width": "2", "fill": "none"});
+                    let leftHand2 = document.createElementNS(svgNS, "line");
+                    attribute(leftHand2, {"stroke": "#000000", "y2": "53", "x2": "67.3", "y1": "41", "x1": "77.3", "stroke-width": "2", "fill": "none"});
+  
+                    svg.appendChild(rightHand2);
+                    svg.appendChild(leftHand2);
+
+                    let rightHand3 = document.createElementNS(svgNS, "line");
+                    attribute(rightHand3, {"stroke": "#000000", "y2": "53", "x2": "125.3", "y1": "41", "x1": "115.3", "stroke-width": "2", "fill": "none"});
+                    let leftHand3 = document.createElementNS(svgNS, "line");
+                    attribute(leftHand3, {"stroke": "#000000", "y2": "53", "x2": "105.3", "y1": "41", "x1": "115.3", "stroke-width": "2", "fill": "none"});
+  
+                    svg.appendChild(rightHand3);
+                    svg.appendChild(leftHand3);
+                  }
+                  
+                  if(n == 3) {
+                      let circle1 = document.createElementNS(svgNS, "ellipse");
+                      attribute(circle1, {"stroke": "#000000", "rx": "11", "ry": "11", "cx": "36", "cy": "24", "stroke-width": "2", "fill": "none"});
+                      svg.appendChild(circle1)
+                  
+                      let circleClipPath1 = document.createElementNS(svgNS, "clipPath");
+                      circleClipPath1.id = "circle1";
+                      let circleInsideClipPath1 = document.createElementNS(svgNS, "ellipse");
+                      attribute(circleInsideClipPath1, {"stroke": "#000000", "stroke-width": "2", "fill": "none" , "rx": "10", "ry": "10", "cx": "36", "cy": "24"});
+                      circleClipPath1.appendChild(circleInsideClipPath1);
+                      svg.appendChild(circleClipPath1);
+
+                      let imageInsideCircle1 = document.createElementNS(svgNS, "image");
+                      attribute(imageInsideCircle1, {"width": "28", "height": "28", "x": "22.4", "y": "10", "href": "Shy.jpeg"});
+                      imageInsideCircle1.setAttributeNS(null, "clip-path", "url(#circle1)")
+                      svg.appendChild(imageInsideCircle1);
+
+                      let circle2 = document.createElementNS(svgNS, "ellipse");
+                      attribute(circle2, {"stroke": "#000000", "rx": "11", "ry": "11", "cx": "77", "cy": "24", "stroke-width": "2", "fill": "none"});
+                      svg.appendChild(circle2)
+
+                      let circleClipPath2 = document.createElementNS(svgNS, "clipPath");
+                      circleClipPath2.id = "circle2";
+                      let circleInsideClipPath2 = document.createElementNS(svgNS, "ellipse");
+                      attribute(circleInsideClipPath2, {"stroke": "#000000", "stroke-width": "2", "fill": "none" , "rx": "10", "ry": "10", "cx": "77", "cy": "24"});
+                      circleClipPath2.appendChild(circleInsideClipPath2);
+                      svg.appendChild(circleClipPath2);
+
+                      let imageInsideCircle2 = document.createElementNS(svgNS, "image");
+                      attribute(imageInsideCircle2, {"width": "28", "height": "28", "x": "63", "y": "10", "href": "Osik.jpeg"});
+                      imageInsideCircle2.setAttributeNS(null, "clip-path", "url(#circle2)")
+                      svg.appendChild(imageInsideCircle2);
+
+
+                      let circle3 = document.createElementNS(svgNS, "ellipse");
+                      attribute(circle3, {"stroke": "#000000", "rx": "11", "ry": "11", "cx": "115", "cy": "24", "stroke-width": "2", "fill": "none"});
+                      svg.appendChild(circle3)
+
+                      let circleClipPath3 = document.createElementNS(svgNS, "clipPath");
+                      circleClipPath3.id = "circle3";
+                      let circleInsideClipPath3 = document.createElementNS(svgNS, "ellipse");
+                      attribute(circleInsideClipPath3, {"stroke": "#000000", "stroke-width": "2", "fill": "none" , "rx": "10", "ry": "10", "cx": "115", "cy": "24"});
+                      circleClipPath3.appendChild(circleInsideClipPath3);
+                      svg.appendChild(circleClipPath3);
+
+                      let imageInsideCircle3 = document.createElementNS(svgNS, "image");
+                      attribute(imageInsideCircle3, {"width": "28", "height": "28", "x": "102", "y": "10", "href": "Rei.jpeg"});
+                      imageInsideCircle3.setAttributeNS(null, "clip-path", "url(#circle3)")
+                      svg.appendChild(imageInsideCircle3);
+
+                      new Audio('shyScreaming.mp3').play();
+                  };
+
+                  if(n == 4) {
+                    let rightStand = document.createElementNS(svgNS, "line");
+                    attribute(rightStand, {"stroke": "#000000", "y2": "75", "x2": "151", "y1": "75", "x1": "136", "stroke-width": "2", "fill": "none"});
+                    svg.appendChild(rightStand);
+
+                    let leftStand = document.createElementNS(svgNS, "line");
+                    attribute(leftStand, {"stroke": "#000000", "y2": "75", "x2": "17", "y1": "75", "x1": "2", "stroke-width": "2", "fill": "none"});
+                    svg.appendChild(leftStand);
+
+                    let rightPillar = document.createElementNS(svgNS, "line");
+                    attribute(rightPillar, {"stroke": "#000000", "y2": "5", "x2": "143.5", "y1": "75", "x1": "143.5", "stroke-width": "2", "fill": "none"});
+                    svg.appendChild(rightPillar);
+
+                    let leftPillar = document.createElementNS(svgNS, "line");
+                    attribute(leftPillar, {"stroke": "#000000", "y2": "5", "x2": "9.5", "y1": "75", "x1": "9.5", "stroke-width": "2", "fill": "none"});
+                    svg.appendChild(leftPillar);
+
+                    let topPillar = document.createElementNS(svgNS, "line");
+                    attribute(topPillar, {"stroke": "#000000", "y2": "6", "x2": "143.5", "y1": "6", "x1": "9.5", "stroke-width": "2", "fill": "none"});
+                    svg.appendChild(topPillar);
+
+                    new Audio('reiCrying.mp3').play();
+                  }
+
+                  if(n == 5) {
+                    let rope1 = document.createElementNS(svgNS, "line");
+                    attribute(rope1, {"stroke": "#000000", "y2": "12.6", "x2": "36", "y1": "5", "x1": "36", "stroke-width": "2", "fill": "none"});
+                    svg.appendChild(rope1);
+
+                    let rope2 = document.createElementNS(svgNS, "line");
+                    attribute(rope2, {"stroke": "#000000", "y2": "12.6", "x2": "77", "y1": "5", "x1": "77", "stroke-width": "2", "fill": "none"});
+                    svg.appendChild(rope2);
+
+                    let rope3 = document.createElementNS(svgNS, "line");
+                    attribute(rope3, {"stroke": "#000000", "y2": "12.6", "x2": "115", "y1": "5", "x1": "115", "stroke-width": "2", "fill": "none"});
+                    svg.appendChild(rope3);
+
+                    new Audio('osikDying.mp3').play();
+
+                    let loseTitle = document.createElement("h2");
+                    let loseTitleNode = document.createTextNode("You Lose!");
+                    loseTitle.appendChild(loseTitleNode);
+                    document.getElementById("result").appendChild(loseTitle);
+
+                    let correctAnswer = document.createElement("h2");
+                    let correctAnswerNode = document.createTextNode("Correct Answer:");
+                    correctAnswer.appendChild(correctAnswerNode);
+                    document.getElementById("correctAnswer").appendChild(correctAnswer);
+
+                    let arr = document.getElementsByClassName(`space`);
+                      for(let k = 0; k < arr.length; k++) {
+                        arr[k].style.color = "black";
+                      }
+
+                    game = "off";
+                  }
+
+                  n++;
+
+                  return false;
+                };
+            </script>
+        </body>
+    </html>

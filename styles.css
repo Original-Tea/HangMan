@@ -1,0 +1,157 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    width: 100%;
+    height: 90vh;
+}
+
+h1 {
+    margin: 1%;
+    text-align: center;
+    font-size: xx-large;
+}
+
+#hangmanDisplay {
+    width: 100%;
+    height: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#hangman {
+    width: 40%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+svg {
+    transform: scale(4);
+}
+
+#randomDisplay {
+    width: 100%;
+    height: 15vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#optionDisplay {
+    width: 100%;
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#keyboard {
+    width: 41vw;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: rgb(71, 70, 70);
+}
+
+#firstRow {
+    width: 40vw;
+    height: 25%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 4%;
+}
+
+#secondRow {
+    width: 40vw;
+    height: 25%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 4%;
+}
+
+#thirdRow {
+    width: 40vw;
+    height: 25%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 4%;
+}
+
+.letter {
+    width: 6%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom-left-radius: 20%;
+    border-bottom-right-radius: 20%;
+    border-top-right-radius: 20%;
+    border-top-left-radius: 30%;
+    background-color: cyan;
+}
+
+.button {
+    width: 90%;
+    height: 90%;
+    background-color: rgb(71, 70, 70);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: cyan;
+    font-size: x-large;
+    margin-bottom: 10%;
+    border: 1px solid rgb(71, 70, 70);
+    border-radius: 15%;
+    box-shadow: inset 1px 1px 6px gray;
+}
+
+.letter:hover {
+    cursor: pointer;
+}
+
+.space { 
+    width: 3vw;
+    height: 5vh;
+    margin-right: 1%;
+    color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 5px black solid;
+}
+
+#result {
+    width: 100%;
+    height: 5%;
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#correctAnswer {
+    width: 100%;
+    height: 5%;
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
